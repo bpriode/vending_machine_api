@@ -5,6 +5,7 @@ const Schema     = mongoose.Schema
 mongoose.connect('mongodb://localhost:27017/vending');
 
 const purchaseSchema = new Schema({
+    description: String,
     moneySpent: Number,
     moneyRequired: Number,
     changeNeeded: Number,

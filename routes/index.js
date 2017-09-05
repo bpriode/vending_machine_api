@@ -8,7 +8,7 @@ router.get('/', function(req, res) {
   res.send('Here is my Vending Machine API')
 })
 
-// get a list of items --working
+// get a list of items
 router.get('/api/customer/items', function(req, res) {
   Vending.find({})
   .then(function(data){
@@ -32,7 +32,7 @@ router.get('/api/customer/items', function(req, res) {
 //
 
 
-// add a new item not previously existing in the machine --working
+// add a new item not previously existing in the machine
 router.post('/api/vendor/items', function(req, res) {
   Vending.create({
     description: req.body.description,
@@ -49,19 +49,21 @@ router.post('/api/vendor/items', function(req, res) {
 
 
 // update item quantity, description, and cost
-router.put('/api/vendor/items/:itemId', function(req, res) {
-  Vending.update({_id: req.params.id}, {
-    description: req.body.description,
-    cost: req.body.cost,
-    quanity:req.body.quanity
-  })
-  .then(function(data) {
-    res.send(data)
-  })
-  .catch(function(err) {
-    res.send('item was not updated correctly')
-  })
-})
+// router.put('/api/vendor/items/:itemId', function(req, res) {
+//
+//
+//   Vending.update({_id: req.params.id}, {
+//     description: req.body.description,
+//     cost: req.body.cost,
+//     quanity:req.body.quanity
+//   })
+//   .then(function(data) {
+//     res.send(data)
+//   })
+//   .catch(function(err) {
+//     res.send('item was not updated correctly')
+//   })
+// })
 
 
 
