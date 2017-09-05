@@ -1,8 +1,10 @@
 const express  = require('express');
-const User     = require('../models/purchase');
 const Vending  = require('../models/vending')
-const mongose  = require('mongoose');
+const Purchase  = require('../models/purchase')
+const mongoose  = require('mongoose');
 const router   = express.Router();
+
+mongoose.connect('mongodb://localhost:27017/vending');
 
 router.get('/', function(req, res) {
   res.send('Here is my Vending Machine API')
@@ -14,12 +16,22 @@ router.get('/api/customer/items', function(req, res) {
   .then(function(data){
   res.send(data)
 }).catch(function(err) {
-  res.send('there are no items to buy')
+  res.send('Vending Machine is Empty')
 })
 });
 
 // purchase an item
-// router.post('/api/customer/items:itemId/purchases')
+router.post('/api/customer/items/:itemId/purchases', function(req, res) {
+  Purchase.create({
+    moneySpent: req.body.moneySpent,
+  })
+  .then(function(data) {
+    res.send(data)
+  })
+  .catch(function(err) {
+    res.send('Item was not Purchased')
+  })
+});
 
 
 // get a list of all purchases with their item and date/time
@@ -37,33 +49,34 @@ router.post('/api/vendor/items', function(req, res) {
   Vending.create({
     description: req.body.description,
     cost: req.body.cost,
-    quanity: req.body.quanity
+    quantity: req.body.quantity
   })
   .then(function(data) {
     res.send(data)
   })
   .catch(function(err) {
-    res.send('something went wrong')
+    res.send('Item was not added')
   });
 });
 
-
+//
 // update item quantity, description, and cost
-// router.put('/api/vendor/items/:itemId', function(req, res) {
-//
-//
-//   Vending.update({_id: req.params.id}, {
-//     description: req.body.description,
-//     cost: req.body.cost,
-//     quanity:req.body.quanity
-//   })
-//   .then(function(data) {
-//     res.send(data)
-//   })
-//   .catch(function(err) {
-//     res.send('item was not updated correctly')
-//   })
-// })
+router.patch('/api/vendor/items/:itemId', function(req, res) {
+
+  Vending.update({_id: req.params.itemId}, {
+
+      description: req.body.description,
+      cost: req.body.cost,
+      quantity:req.body.quantity
+
+  })
+  .then(function(data) {
+    res.send(data)
+  })
+  .catch(function(err) {
+    res.send('Item was not updated correctly')
+  })
+})
 
 
 

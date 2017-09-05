@@ -2,12 +2,11 @@ const mongoose   = require('mongoose');
 mongoose.Promise = require('bluebird');
 const Schema     = mongoose.Schema
 
-mongoose.connect('mongodb://localhost:27017/vending');
 
 const vendingSchema = new Schema({
     description: { type: String, required: true},
     cost: Number,
-    quanity: Number
+    quantity: Number
 });
 
 
