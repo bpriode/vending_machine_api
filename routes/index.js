@@ -10,7 +10,7 @@ router.get('/', function(req, res) {
   res.send('Here is my Vending Machine API')
 })
 
-// get a list of items -- working
+// get a list of items
 router.get('/api/customer/items', function(req, res) {
   Vending.find({})
   .then(function(data){
@@ -20,30 +20,24 @@ router.get('/api/customer/items', function(req, res) {
 })
 });
 
-// purchase an item !!need to calculate change and quanity
+// purchase an item
 router.post('/api/customer/items/:itemId/purchases', function(req, res) {
-
-  // Purchase.aggregate([
-  // {$group: {$subtract: ['$moneySpent','$moneyRequired']}}])
-  //   .then(function(subtract){
-  //     res.send(subtract)
-  //     })
 
   Purchase.create({
     vendingId: req.params.itemId,
     moneySpent: req.body.moneySpent,
     changeNeeded: req.body.moneySpent - req.body.moneyRequired
-  })
+    })
   .then(function(data) {
     res.send(data)
   })
   .catch(function(err) {
     res.send('Item was not Purchased')
+    })
   })
-})
 
 
-// get a list of all purchases with their item and date/time --working
+// get a list of all purchases with their item and date/time
 router.get('/api/vendor/purchases', function(req, res) {
   Purchase.find({})
   .then(function(data) {
@@ -55,7 +49,7 @@ router.get('/api/vendor/purchases', function(req, res) {
 
 
 
-// get a total amount of money accepted by the machine --working
+// get a total amount of money accepted by the machine
 router.get('/api/vendor/money', function(req, res) {
 
     Purchase.aggregate([
@@ -68,7 +62,7 @@ router.get('/api/vendor/money', function(req, res) {
 
 
 
-// add a new item not previously existing in the machine --working
+// add a new item not previously existing in the machine
 router.post('/api/vendor/items', function(req, res) {
   Vending.create({
     description: req.body.description,
@@ -84,8 +78,8 @@ router.post('/api/vendor/items', function(req, res) {
 });
 
 
-// update item quantity, description, and cost --working
-router.patch('/api/vendor/items/:itemId', function(req, res) {
+// update item quantity, description, and cost
+router.put('/api/vendor/items/:itemId', function(req, res) {
 
   Vending.update({_id: req.params.itemId}, {
 
