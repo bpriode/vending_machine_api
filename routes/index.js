@@ -22,9 +22,15 @@ router.get('/api/customer/items', function(req, res) {
 
 // purchase an item
 router.post('/api/customer/items/:itemId/purchases', function(req, res) {
-  Purchase.create({
+
+  let newPurchase = {
+    itemId: req.params.id,
     moneySpent: req.body.moneySpent,
-  })
+
+    //need to connect to vending _id
+  }
+
+  Purchase.create(newPurchase)
   .then(function(data) {
     res.send(data)
   })
@@ -35,13 +41,29 @@ router.post('/api/customer/items/:itemId/purchases', function(req, res) {
 
 
 // get a list of all purchases with their item and date/time
-// router.get('/api/vendor/purchases')
-//
+router.get('/api/vendor/purchases', function(req, res) {
+  Purchase.find({})
+  .then(function(data) {
+    res.send(data)
+  }).catch(function(err) {
+    res.send('List of purchases not available')
+  })
+})
+
 
 
 // get a total amount of money accepted by the machine
-// router.get('/api/vendor/items')
-//
+router.get('/api/vendor/money', function(req, res) {
+
+    Purchase.aggregate([
+    {$group: {_id: null, sum: {$sum: '$moneySpent'}}}
+    ])
+  .then(function(sum){
+    res.send(sum)
+  })
+})
+
+
 
 
 // add a new item not previously existing in the machine

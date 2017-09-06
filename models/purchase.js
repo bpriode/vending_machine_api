@@ -8,6 +8,7 @@ const purchaseSchema = new Schema({
     moneySpent: Number,
     moneyRequired: Number,
     changeNeeded: Number,
+    purchasedAt: {type:Date, default:Date.now}
 });
 
 
