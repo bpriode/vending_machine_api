@@ -23,9 +23,11 @@ router.get('/api/customer/items', function(req, res) {
 // purchase an item
 router.post('/api/customer/items/:itemId/purchases', function(req, res) {
 
+
   Purchase.create({
     vendingId: req.params.itemId,
     moneySpent: req.body.moneySpent,
+    moneyRequired: req.body.moneyRequired,
     changeNeeded: req.body.moneySpent - req.body.moneyRequired
     })
   .then(function(data) {
