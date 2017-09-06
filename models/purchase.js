@@ -4,7 +4,7 @@ const Schema     = mongoose.Schema
 
 
 const purchaseSchema = new Schema({
-    description: String,
+    vendingId: String,
     moneySpent: Number,
     moneyRequired: Number,
     changeNeeded: Number,

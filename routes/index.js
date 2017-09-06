@@ -23,20 +23,24 @@ router.get('/api/customer/items', function(req, res) {
 // purchase an item !!need to calculate change and quanity
 router.post('/api/customer/items/:itemId/purchases', function(req, res) {
 
-  let newPurchase = {
-    itemId: req.params.id,
+  // Purchase.aggregate([
+  // {$group: {$subtract: ['$moneySpent','$moneyRequired']}}])
+  //   .then(function(subtract){
+  //     res.send(subtract)
+  //     })
+
+  Purchase.create({
+    vendingId: req.params.itemId,
     moneySpent: req.body.moneySpent,
-
-  }
-
-  Purchase.create(newPurchase)
+    changeNeeded: req.body.moneySpent - req.body.moneyRequired
+  })
   .then(function(data) {
     res.send(data)
   })
   .catch(function(err) {
     res.send('Item was not Purchased')
   })
-});
+})
 
 
 // get a list of all purchases with their item and date/time --working
